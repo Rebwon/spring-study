@@ -5,7 +5,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import org.aopalliance.intercept.MethodInterceptor;
+import org.aopalliance.intercept.MethodInvocation;
 import org.junit.jupiter.api.Test;
+import org.springframework.aop.framework.ProxyFactoryBean;
 
 public class DynamicProxyTest {
 
@@ -16,11 +19,11 @@ public class DynamicProxyTest {
     assertThat(hello.sayHi("Rebwon")).isEqualTo("Hi Rebwon");
     assertThat(hello.sayThankYou("Rebwon")).isEqualTo("Thank you Rebwon");
 
-    Hello proxyHello = new HelloUppercase(hello);
-//    Hello proxyHello = (Hello) Proxy.newProxyInstance(
-//        getClass().getClassLoader(),
-//        new Class[]{Hello.class},
-//        new UppercaseHandler(new HelloTarget()));
+    //Hello proxyHello = new HelloUppercase(hello);
+    Hello proxyHello = (Hello) Proxy.newProxyInstance(
+        getClass().getClassLoader(),
+        new Class[]{Hello.class},
+        new UppercaseHandler(new HelloTarget()));
     assertThat(proxyHello.sayHello("Rebwon")).isEqualTo("HELLO REBWON");
     assertThat(proxyHello.sayHi("Rebwon")).isEqualTo("HI REBWON");
     assertThat(proxyHello.sayThankYou("Rebwon")).isEqualTo("THANK YOU REBWON");
@@ -35,7 +38,33 @@ public class DynamicProxyTest {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-      return null;
+      Object ret = method.invoke(target, args);
+      if(ret instanceof String && method.getName().startsWith("say")) {
+        return ((String) ret).toUpperCase();
+      } else{
+        return ret;
+      }
+    }
+  }
+
+  @Test
+  void proxyFactoryBean() {
+    ProxyFactoryBean pfBean = new ProxyFactoryBean();
+    pfBean.setTarget(new HelloTarget());
+    pfBean.addAdvice(new UppercaseAdvice());
+
+    Hello proxyHello = (Hello) pfBean.getObject();
+    assertThat(proxyHello.sayHello("Rebwon")).isEqualTo("HELLO REBWON");
+    assertThat(proxyHello.sayHi("Rebwon")).isEqualTo("HI REBWON");
+    assertThat(proxyHello.sayThankYou("Rebwon")).isEqualTo("THANK YOU REBWON");
+  }
+
+  class UppercaseAdvice implements MethodInterceptor {
+
+    @Override
+    public Object invoke(MethodInvocation methodInvocation) throws Throwable {
+      String ret = (String) methodInvocation.proceed();
+      return ret.toUpperCase();
     }
   }
 
