@@ -37,9 +37,9 @@ public class SimpleMVCTest extends AbstractDispatcherServletTest {
   @Test
   void contentNegotiation() throws ServletException, IOException {
     this.setClasses(TestAppConfig.class, ContentHandler.class)
-        .runService("/content.json");
+        .runService("/content");
 
-    assertThat(this.response.getContentType()).isEqualTo("application/json");
+    assertThat(this.response.getContentType()).isEqualTo("application/json;charset=UTF-8");
     assertThat(this.response.getContentAsString()).isEqualTo("{\"name\":\"rebwon\"}");
   }
 
