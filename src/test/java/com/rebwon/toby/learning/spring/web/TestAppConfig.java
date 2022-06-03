@@ -11,13 +11,14 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 @Configuration
 public class TestAppConfig {
 
-  @Bean
-  public ContentNegotiatingViewResolver contentNegotiatingViewResolver() {
-    ContentNegotiatingViewResolver contentNegotiatingViewResolver = new ContentNegotiatingViewResolver();
-    contentNegotiatingViewResolver.setDefaultViews(List.of(new MappingJackson2JsonView()));
-    ContentNegotiationManagerFactoryBean contentNegotiationManagerFactoryBean = new ContentNegotiationManagerFactoryBean();
-    contentNegotiationManagerFactoryBean.addMediaType("json", MediaType.APPLICATION_JSON);
-    contentNegotiatingViewResolver.setContentNegotiationManager(contentNegotiationManagerFactoryBean.build());
-    return contentNegotiatingViewResolver;
-  }
+    @Bean
+    public ContentNegotiatingViewResolver contentNegotiatingViewResolver() {
+        ContentNegotiatingViewResolver contentNegotiatingViewResolver = new ContentNegotiatingViewResolver();
+        contentNegotiatingViewResolver.setDefaultViews(List.of(new MappingJackson2JsonView()));
+        ContentNegotiationManagerFactoryBean contentNegotiationManagerFactoryBean = new ContentNegotiationManagerFactoryBean();
+        contentNegotiationManagerFactoryBean.addMediaType("json", MediaType.APPLICATION_JSON);
+        contentNegotiatingViewResolver.setContentNegotiationManager(
+            contentNegotiationManagerFactoryBean.build());
+        return contentNegotiatingViewResolver;
+    }
 }

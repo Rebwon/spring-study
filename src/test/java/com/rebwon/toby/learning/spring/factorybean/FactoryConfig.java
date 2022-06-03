@@ -6,8 +6,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class FactoryConfig {
 
-  @Bean
-  public MessageFactoryBean message() {
-    return new MessageFactoryBean("Factory Bean");
-  }
+    @Bean
+    public MessageFactoryBean message() {
+        return new MessageFactoryBean("Factory Bean");
+    }
 }

@@ -9,26 +9,26 @@ import org.junit.jupiter.api.Test;
 
 public class ReflectionTest {
 
-  @Test
-  void invokeMethod()
-      throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-    String name = "Spring";
+    @Test
+    void invokeMethod()
+        throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        String name = "Spring";
 
-    assertThat(name.length()).isEqualTo(6);
+        assertThat(name.length()).isEqualTo(6);
 
-    Method lengthMethod = String.class.getMethod("length");
-    assertThat(lengthMethod.invoke(name)).isEqualTo(6);
+        Method lengthMethod = String.class.getMethod("length");
+        assertThat(lengthMethod.invoke(name)).isEqualTo(6);
 
-    assertThat(name.charAt(0)).isEqualTo('S');
+        assertThat(name.charAt(0)).isEqualTo('S');
 
-    Method charAtMethod = String.class.getMethod("charAt", int.class);
-    assertThat(charAtMethod.invoke(name, 0)).isEqualTo('S');
-  }
+        Method charAtMethod = String.class.getMethod("charAt", int.class);
+        assertThat(charAtMethod.invoke(name, 0)).isEqualTo('S');
+    }
 
-  @Test
-  void createObject()
-      throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-    Date now = (Date) Class.forName("java.util.Date").getConstructor().newInstance();
-    assertThat(now).isNotNull();
-  }
+    @Test
+    void createObject()
+        throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        Date now = (Date) Class.forName("java.util.Date").getConstructor().newInstance();
+        assertThat(now).isNotNull();
+    }
 }

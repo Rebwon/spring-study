@@ -16,38 +16,41 @@ import org.springframework.core.io.ResourceLoader;
 
 public class AutoRegisteredBeanTest {
 
-  @Test
-  void autoRegisteredBean() {
-    System.getProperties().put("os.name", "Hi");
+    @Test
+    void autoRegisteredBean() {
+        System.getProperties().put("os.name", "Hi");
 
-    AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(
-        SystemBean.class);
-    SystemBean bean = ac.getBean(SystemBean.class);
-    assertThat(bean.applicationContext).isEqualTo(ac);
+        AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(
+            SystemBean.class);
+        SystemBean bean = ac.getBean(SystemBean.class);
+        assertThat(bean.applicationContext).isEqualTo(ac);
 
-    System.out.println(bean.osname);
-    System.out.println(bean.path);
+        System.out.println(bean.osname);
+        System.out.println(bean.path);
 
-    System.out.println("### " + bean.systemProperties);
-    System.out.println("$$$ " + bean.systemEnvironment);
-  }
+        System.out.println("### " + bean.systemProperties);
+        System.out.println("$$$ " + bean.systemEnvironment);
+    }
 
-  static class SystemBean {
-    @Resource
-    ApplicationContext applicationContext;
-    @Autowired
-    BeanFactory beanFactory;
-    @Autowired
-    ResourceLoader resourceLoader;
-    @Autowired
-    ApplicationEventPublisher applicationEventPublisher;
+    static class SystemBean {
 
-    @Value("#{systemProperties['os.name']}") String osname;
-    @Value("#{systemEnvironment['path']}") String path;
+        @Resource
+        ApplicationContext applicationContext;
+        @Autowired
+        BeanFactory beanFactory;
+        @Autowired
+        ResourceLoader resourceLoader;
+        @Autowired
+        ApplicationEventPublisher applicationEventPublisher;
 
-    @Resource
-    Properties systemProperties;
-    @Resource
-    Map systemEnvironment;
-  }
+        @Value("#{systemProperties['os.name']}")
+        String osname;
+        @Value("#{systemEnvironment['path']}")
+        String path;
+
+        @Resource
+        Properties systemProperties;
+        @Resource
+        Map systemEnvironment;
+    }
 }

@@ -1,34 +1,35 @@
 package com.rebwon.toby.learning.spring.ioc.bean;
 
 public class Hello {
-  private String name;
-  private Printer printer;
 
-  public Hello() {
-  }
+    private String name;
+    private Printer printer;
 
-  public Hello(String name, Printer printer) {
-    this.name = name;
-    this.printer = printer;
-  }
+    public Hello() {
+    }
 
-  public String sayHello() {
-    return "Hello " + name;
-  }
+    public Hello(String name, Printer printer) {
+        this.name = name;
+        this.printer = printer;
+    }
 
-  public void print() {
-    this.printer.print(this.sayHello());
-  }
+    public String sayHello() {
+        return "Hello " + name;
+    }
 
-  public void setName(String name) {
-    this.name = name;
-  }
+    public void print() {
+        this.printer.print(this.sayHello());
+    }
 
-  public void setPrinter(Printer printer) {
-    this.printer = printer;
-  }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-  public Printer getPrinter() {
-    return printer;
-  }
+    public void setPrinter(Printer printer) {
+        this.printer = printer;
+    }
+
+    public Printer getPrinter() {
+        return printer;
+    }
 }

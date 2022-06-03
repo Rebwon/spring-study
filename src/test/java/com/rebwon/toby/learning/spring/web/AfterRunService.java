@@ -6,15 +6,15 @@ import org.springframework.web.servlet.ModelAndView;
 
 public interface AfterRunService {
 
-  String getContentAsString() throws UnsupportedEncodingException;
+    String getContentAsString() throws UnsupportedEncodingException;
 
-  WebApplicationContext getContext();
+    WebApplicationContext getContext();
 
-  <T> T getBean(Class<T> beanType);
+    <T> T getBean(Class<T> beanType);
 
-  ModelAndView getModelAndView();
+    ModelAndView getModelAndView();
 
-  AfterRunService assertViewName(String viewName);
+    AfterRunService assertViewName(String viewName);
 
-  AfterRunService assertModel(String name, Object value);
+    AfterRunService assertModel(String name, Object value);
 }

@@ -10,17 +10,17 @@ import org.springframework.mock.web.MockHttpServletResponse;
 
 public class ServletTest {
 
-  @Test
-  void getMethodServlet() throws ServletException, IOException {
-    MockHttpServletRequest req = new MockHttpServletRequest("GET", "/hello");
-    req.addParameter("name", "rebwon");
-    MockHttpServletResponse res = new MockHttpServletResponse();
+    @Test
+    void getMethodServlet() throws ServletException, IOException {
+        MockHttpServletRequest req = new MockHttpServletRequest("GET", "/hello");
+        req.addParameter("name", "rebwon");
+        MockHttpServletResponse res = new MockHttpServletResponse();
 
-    SimpleGetServlet servlet = new SimpleGetServlet();
-    servlet.service(req, res);
-    servlet.init();
+        SimpleGetServlet servlet = new SimpleGetServlet();
+        servlet.service(req, res);
+        servlet.init();
 
-    assertThat(res.getContentAsString()).isEqualTo("<HTML><BODY>Hello rebwon</BODY></HTML>");
-    assertThat(res.getContentAsString().indexOf("Hello rebwon") > 0).isTrue();
-  }
+        assertThat(res.getContentAsString()).isEqualTo("<HTML><BODY>Hello rebwon</BODY></HTML>");
+        assertThat(res.getContentAsString().indexOf("Hello rebwon") > 0).isTrue();
+    }
 }

@@ -9,49 +9,51 @@ import org.springframework.context.annotation.Configuration;
 
 public class DestroyBeanTest {
 
-  @Test
-  void destroyBean() {
-    AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(
-        TestConfig.class);
-  }
-
-  @Configuration
-  static class TestConfig {
-
-    @Bean(destroyMethod = "destroy")
-    public BeanC beanC() {
-      return new BeanC();
+    @Test
+    void destroyBean() {
+        AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(
+            TestConfig.class);
     }
 
-    @Bean
-    public BeanB beanB() {
-      return new BeanB();
+    @Configuration
+    static class TestConfig {
+
+        @Bean(destroyMethod = "destroy")
+        public BeanC beanC() {
+            return new BeanC();
+        }
+
+        @Bean
+        public BeanB beanB() {
+            return new BeanB();
+        }
+
+        @Bean
+        public BeanA beanA() {
+            return new BeanA();
+        }
     }
 
-    @Bean
-    public BeanA beanA() {
-      return new BeanA();
-    }
-  }
+    static class BeanC {
 
-  static class BeanC {
-    public void destroy() {
-      System.out.println("Destroy BeanC");
+        public void destroy() {
+            System.out.println("Destroy BeanC");
+        }
     }
-  }
 
-  static class BeanB {
-    @PreDestroy
-    public void init() {
-      System.out.println("Destroy BeanB");
+    static class BeanB {
+
+        @PreDestroy
+        public void init() {
+            System.out.println("Destroy BeanB");
+        }
     }
-  }
 
-  static class BeanA implements DisposableBean {
+    static class BeanA implements DisposableBean {
 
-    @Override
-    public void destroy() throws Exception {
-      System.out.println("Destroy BeanA");
+        @Override
+        public void destroy() throws Exception {
+            System.out.println("Destroy BeanA");
+        }
     }
-  }
 }

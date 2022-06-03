@@ -18,79 +18,81 @@ import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.ModelAndView;
 
 public class ConfigurableDispatcherServlet extends DispatcherServlet {
-  protected Class<?>[] classes;
-  private String[] locations;
 
-  private ModelAndView modelAndView;
+    protected Class<?>[] classes;
+    private String[] locations;
 
-  public ConfigurableDispatcherServlet() {}
+    private ModelAndView modelAndView;
 
-  public ConfigurableDispatcherServlet(String[] locations) {
-    this.locations = locations;
-  }
-
-  public ConfigurableDispatcherServlet(Class<?>[] classes) {
-    this.classes = classes;
-  }
-
-  public void setLocations(String... locations) {
-    this.locations = locations;
-  }
-
-  public void setRelativeLocations(Class clazz, String... relativeLocations) {
-    String[] locations = new String[relativeLocations.length];
-    String currentPath = ClassUtils.classPackageAsResourcePath(clazz) + "/";
-    for(int i=0; i<relativeLocations.length; i++) {
-      locations[i] = currentPath + relativeLocations[i];
+    public ConfigurableDispatcherServlet() {
     }
-    this.setLocations(locations);
-  }
 
-  public void setClasses(Class<?>... classes) {
-    this.classes = classes;
-  }
+    public ConfigurableDispatcherServlet(String[] locations) {
+        this.locations = locations;
+    }
 
-  @Override
-  public void service(ServletRequest req, ServletResponse res)
-      throws ServletException, IOException {
-    this.modelAndView = null;
-    super.service(req, res);
-  }
+    public ConfigurableDispatcherServlet(Class<?>[] classes) {
+        this.classes = classes;
+    }
 
-  @Override
-  protected WebApplicationContext createWebApplicationContext(ApplicationContext parent) {
-    AbstractRefreshableWebApplicationContext wac = new AbstractRefreshableWebApplicationContext() {
+    public void setLocations(String... locations) {
+        this.locations = locations;
+    }
 
-      @Override
-      protected void loadBeanDefinitions(DefaultListableBeanFactory beanFactory)
-          throws BeansException, IOException {
-        if(locations != null) {
-          XmlBeanDefinitionReader xmlReader = new XmlBeanDefinitionReader(
-              beanFactory);
-          xmlReader.loadBeanDefinitions(locations);
+    public void setRelativeLocations(Class clazz, String... relativeLocations) {
+        String[] locations = new String[relativeLocations.length];
+        String currentPath = ClassUtils.classPackageAsResourcePath(clazz) + "/";
+        for (int i = 0; i < relativeLocations.length; i++) {
+            locations[i] = currentPath + relativeLocations[i];
         }
-        AnnotatedBeanDefinitionReader reader = new AnnotatedBeanDefinitionReader(
-            beanFactory);
-        if(classes != null) {
-          reader.register(classes);
-        }
-      }
-    };
+        this.setLocations(locations);
+    }
 
-    wac.setServletContext(getServletContext());
-    wac.setServletConfig(getServletConfig());
-    wac.refresh();
-    return wac;
-  }
+    public void setClasses(Class<?>... classes) {
+        this.classes = classes;
+    }
 
-  @Override
-  protected void render(ModelAndView mv, HttpServletRequest request, HttpServletResponse response)
-      throws Exception {
-    this.modelAndView = mv;
-    super.render(mv, request, response);
-  }
+    @Override
+    public void service(ServletRequest req, ServletResponse res)
+        throws ServletException, IOException {
+        this.modelAndView = null;
+        super.service(req, res);
+    }
 
-  public ModelAndView getModelAndView() {
-    return modelAndView;
-  }
+    @Override
+    protected WebApplicationContext createWebApplicationContext(ApplicationContext parent) {
+        AbstractRefreshableWebApplicationContext wac = new AbstractRefreshableWebApplicationContext() {
+
+            @Override
+            protected void loadBeanDefinitions(DefaultListableBeanFactory beanFactory)
+                throws BeansException, IOException {
+                if (locations != null) {
+                    XmlBeanDefinitionReader xmlReader = new XmlBeanDefinitionReader(
+                        beanFactory);
+                    xmlReader.loadBeanDefinitions(locations);
+                }
+                AnnotatedBeanDefinitionReader reader = new AnnotatedBeanDefinitionReader(
+                    beanFactory);
+                if (classes != null) {
+                    reader.register(classes);
+                }
+            }
+        };
+
+        wac.setServletContext(getServletContext());
+        wac.setServletConfig(getServletConfig());
+        wac.refresh();
+        return wac;
+    }
+
+    @Override
+    protected void render(ModelAndView mv, HttpServletRequest request, HttpServletResponse response)
+        throws Exception {
+        this.modelAndView = mv;
+        super.render(mv, request, response);
+    }
+
+    public ModelAndView getModelAndView() {
+        return modelAndView;
+    }
 }

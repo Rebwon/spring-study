@@ -18,43 +18,46 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ContextConfiguration(classes = TestContextConfig.class)
 public class TestContextTest {
 
-  @Autowired BeanA a;
-  @Resource BeanA beanA;
-  BeanA b;
-  BeanA c;
+    @Autowired
+    BeanA a;
+    @Resource
+    BeanA beanA;
+    BeanA b;
+    BeanA c;
 
-  @Autowired
-  public void setBeanA(BeanA b) {
-    this.b = b;
-  }
-
-  @Autowired
-  public void init(BeanA c) {
-    this.c = c;
-  }
-
-  @Test
-  @DirtiesContext
-  void test1() {
-    assertThat(a).isNotNull();
-    assertThat(beanA).isNotNull();
-    assertThat(b).isNotNull();
-    assertThat(c).isNotNull();
-  }
-
-  @Configuration
-  static class TestContextConfig {
-
-    @Bean
-    public BeanA beanA() {
-      return new BeanA();
+    @Autowired
+    public void setBeanA(BeanA b) {
+        this.b = b;
     }
-  }
 
-  static class BeanA {
-    @PostConstruct
-    public void init() {
-      System.out.println("A");
+    @Autowired
+    public void init(BeanA c) {
+        this.c = c;
     }
-  }
+
+    @Test
+    @DirtiesContext
+    void test1() {
+        assertThat(a).isNotNull();
+        assertThat(beanA).isNotNull();
+        assertThat(b).isNotNull();
+        assertThat(c).isNotNull();
+    }
+
+    @Configuration
+    static class TestContextConfig {
+
+        @Bean
+        public BeanA beanA() {
+            return new BeanA();
+        }
+    }
+
+    static class BeanA {
+
+        @PostConstruct
+        public void init() {
+            System.out.println("A");
+        }
+    }
 }

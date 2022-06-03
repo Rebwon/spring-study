@@ -9,49 +9,51 @@ import org.springframework.context.annotation.Configuration;
 
 public class InitialBeanTest {
 
-  @Test
-  void initializingBean() {
-    AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(
-        TestConfig.class);
-  }
-
-  @Configuration
-  static class TestConfig {
-
-    @Bean(initMethod = "init")
-    public BeanC beanC() {
-      return new BeanC();
+    @Test
+    void initializingBean() {
+        AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(
+            TestConfig.class);
     }
 
-    @Bean
-    public BeanB beanB() {
-      return new BeanB();
+    @Configuration
+    static class TestConfig {
+
+        @Bean(initMethod = "init")
+        public BeanC beanC() {
+            return new BeanC();
+        }
+
+        @Bean
+        public BeanB beanB() {
+            return new BeanB();
+        }
+
+        @Bean
+        public BeanA beanA() {
+            return new BeanA();
+        }
     }
 
-    @Bean
-    public BeanA beanA() {
-      return new BeanA();
-    }
-  }
+    static class BeanC {
 
-  static class BeanC {
-    public void init() {
-      System.out.println("Init BeanC");
+        public void init() {
+            System.out.println("Init BeanC");
+        }
     }
-  }
 
-  static class BeanB {
-    @PostConstruct
-    public void init() {
-      System.out.println("Init BeanB");
+    static class BeanB {
+
+        @PostConstruct
+        public void init() {
+            System.out.println("Init BeanB");
+        }
     }
-  }
 
-  static class BeanA implements InitializingBean {
+    static class BeanA implements InitializingBean {
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
-      System.out.println("Init BeanA");
+        @Override
+        public void afterPropertiesSet() throws Exception {
+            System.out.println("Init BeanA");
+        }
     }
-  }
 }

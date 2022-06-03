@@ -3,24 +3,25 @@ package com.rebwon.toby.learning.spring.factorybean;
 import org.springframework.beans.factory.FactoryBean;
 
 public class MessageFactoryBean implements FactoryBean<Message> {
-  String text;
 
-  public MessageFactoryBean(String text) {
-    this.text = text;
-  }
+    String text;
 
-  @Override
-  public Message getObject() throws Exception {
-    return Message.newMessage(this.text);
-  }
+    public MessageFactoryBean(String text) {
+        this.text = text;
+    }
 
-  @Override
-  public Class<?> getObjectType() {
-    return Message.class;
-  }
+    @Override
+    public Message getObject() throws Exception {
+        return Message.newMessage(this.text);
+    }
 
-  @Override
-  public boolean isSingleton() {
-    return true;
-  }
+    @Override
+    public Class<?> getObjectType() {
+        return Message.class;
+    }
+
+    @Override
+    public boolean isSingleton() {
+        return true;
+    }
 }
