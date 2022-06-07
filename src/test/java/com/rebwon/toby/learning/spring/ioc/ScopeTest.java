@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.ObjectFactoryCreatingFactoryBean;
 import org.springframework.beans.factory.config.ServiceLocatorFactoryBean;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -179,13 +180,14 @@ public class ScopeTest {
         assertThat(counter.addCounter).isEqualTo(2);
         assertThat(counter.size()).isEqualTo(1);
 
+        var factory = ((AbstractRefreshableWebApplicationContext) ds.getWebApplicationContext()).getBeanFactory();
+
         ds.service(new MockHttpServletRequest("GET", "/hello"), this.res);
         assertThat(counter.addCounter).isEqualTo(4);
         assertThat(counter.size()).isEqualTo(2);
 
         for (String name :
-            ((AbstractRefreshableWebApplicationContext) ds.getWebApplicationContext()).getBeanFactory()
-                .getRegisteredScopeNames()
+            factory.getRegisteredScopeNames()
         ) {
             System.out.println(name);
         }
